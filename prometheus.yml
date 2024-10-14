@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 15s  # Define cada cuánto Prometheus raspa datos de los targets
+
+scrape_configs:
+  - job_name: 'py-app'  # Nombre del trabajo
+    static_configs:
+      - targets: ['app:8000']  # Lista de direcciones y puertos de los targets

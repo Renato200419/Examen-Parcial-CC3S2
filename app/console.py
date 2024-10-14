@@ -7,7 +7,9 @@ class ConsolaSimonSays:
         self.base_url = base_url
         self.secuencia_actual = []  # Almacena la secuencia completa generada
         self.nuevo_color = None  # Almacena el nuevo color que se añade
-
+        self.puntuacion = 0
+        self.dificultad = "facil"
+        
     def mostrar_menu_colores(self):
         """Muestra un menú para que el jugador seleccione colores."""
         print("Selecciona el color correspondiente:")
@@ -15,7 +17,21 @@ class ConsolaSimonSays:
         print("2. Verde")
         print("3. Azul")
         print("4. Amarillo")
-
+    
+    def seleccionar_dificultad(self):
+        """Permite al jugador seleccionar el nivel de dificultad."""
+        print("Selecciona el nivel de dificultad:")
+        print("1. Fácil")
+        print("2. Difícil")
+        opcion = int(input("Elige un número (1-2): ").strip())
+        if opcion == 1:
+            self.dificultad = "facil"
+        elif opcion == 2:
+            self.dificultad = "dificil"
+        else:
+            print("Opción no válida, elige nuevamente.")
+            self.seleccionar_dificultad()
+    
     def obtener_secuencia_jugador(self):
         """Permite al jugador seleccionar los colores de la secuencia actual."""
         secuencia_jugador = []
@@ -38,10 +54,14 @@ class ConsolaSimonSays:
 
     def iniciar_juego(self):
         """Llama al endpoint para iniciar el juego."""
-        response = requests.post(f"{self.base_url}/juego/iniciar")
+        self.seleccionar_dificultad()
+        response = requests.post(f"{self.base_url}/juego/iniciar", params={"dificultad": self.dificultad})
         if response.status_code == 200:
-            self.secuencia_actual = response.json()["secuencia"]
-            print(f"Juego iniciado. Secuencia: {self.secuencia_actual}")
+            data = response.json()
+            self.secuencia_actual = data["secuencia"]
+            self.puntuacion = data["puntuacion"]
+            print(f"Juego iniciado. Dificultad: {self.dificultad}. Puntuación: {self.puntuacion}.")
+            print(f"Secuencia: {self.secuencia_actual}")
         else:
             print("Error al iniciar el juego.")
 
@@ -49,7 +69,9 @@ class ConsolaSimonSays:
         """Llama al endpoint para validar la jugada del jugador."""
         response = requests.post(f"{self.base_url}/juego/validar", json=secuencia_jugador)
         if response.status_code == 200:
-            print("¡Secuencia correcta! Continúa.")
+            data = response.json()
+            self.puntuacion = data["puntuacion"]
+            print(f"¡Secuencia correcta! Puntuación: {self.puntuacion}.")
             return True
         else:
             print(f"Secuencia incorrecta. Juego terminado. {response.json()['detail']}")
@@ -59,6 +81,7 @@ class ConsolaSimonSays:
         """Llama al endpoint para continuar el juego, añadiendo un nuevo color."""
         response = requests.post(f"{self.base_url}/juego/continuar")
         if response.status_code == 200:
+            data = response.json()
             self.secuencia_actual = response.json()["secuencia"]
             print(f"Nuevo color añadido: {self.secuencia_actual[-1]}")
         else:

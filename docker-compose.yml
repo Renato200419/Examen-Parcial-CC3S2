@@ -12,7 +12,7 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-      start_period: 40s
+      start_period: 30s
 
   prometheus:
     image: prom/prometheus  # Utiliza la imagen oficial de Prometheus

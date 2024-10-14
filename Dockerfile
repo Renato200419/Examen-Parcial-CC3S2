@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.9
 
 # Crear directorio de la app y copiar todo el contenido
 WORKDIR /app

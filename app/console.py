@@ -1,12 +1,10 @@
 import requests
 
-from app.routes import secuencia_actual
 
 class ConsolaSimonSays:
     def __init__(self, base_url="http://localhost:8000"):
         self.base_url = base_url
         self.secuencia_actual = []  # Almacena la secuencia completa generada
-        self.nuevo_color = None  # Almacena el nuevo color que se añade
         self.puntuacion = 0
         self.dificultad = "facil"
         
@@ -83,7 +81,10 @@ class ConsolaSimonSays:
         if response.status_code == 200:
             data = response.json()
             self.secuencia_actual = response.json()["secuencia"]
-            print(f"Nuevo color añadido: {self.secuencia_actual[-1]}")
+            if self.dificultad == "facil" : 
+                print(f"Nuevo color añadido: {self.secuencia_actual[-1]}")
+            else:
+                print(f"Nuevo color añadido: {self.secuencia_actual[-2:]}")    
         else:
             print("Error al continuar el juego.")
 

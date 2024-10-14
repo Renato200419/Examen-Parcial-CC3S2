@@ -1,0 +1,67 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f 4)/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose version
+
+      - name: Build and start services
+        run: |
+          docker-compose up -d --build
+
+      - name: Wait for services to be ready
+        run: |
+          echo "Waiting for services to be ready..."
+          for i in {1..30}; do
+            if docker-compose exec app curl -s http://localhost:8000/; then
+              echo "Services are ready!"
+              break
+            else
+              echo "Waiting for services to be ready..."
+              sleep 5
+            fi
+          done
+          if [ $i -eq 30 ]; then
+            echo "Application did not start in time"
+            exit 1
+          fi
+
+      #- name: Run Behave tests
+        #run: |
+          #docker-compose exec app behave
+
+      - name: Run unit tests
+        run: |
+          docker-compose exec app pytest tests/
+
+      - name: Update pip and setuptools
+        run: |
+          docker-compose exec app pip install --upgrade pip setuptools
+
+      - name: Audit dependencies
+        run: |
+          docker-compose exec app pip install pip-audit
+          docker-compose exec app pip-audit
+
+      - name: Tear down services
+        run: |
+          docker-compose down

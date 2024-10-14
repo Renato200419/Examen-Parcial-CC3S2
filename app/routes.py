@@ -8,7 +8,7 @@ router = APIRouter()
 # Ruta principal
 @router.get("/")
 def root():
-    return {"message": "Bienvenido a la app!"}
+    return {"message": "Aplicación para Simon Says"}
 
 # Ruta de verificación de salud
 @router.get("/health")

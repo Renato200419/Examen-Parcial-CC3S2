@@ -45,8 +45,8 @@ jobs:
             exit 1
           fi
 
-      #- name: Run Behave tests
-        #run: |
+      - name: Run Behave tests
+        run: |
           #docker-compose exec app behave
 
       - name: Run unit tests

@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  app:
+    build: .  # Construye la imagen desde el Dockerfile en el directorio actual
+    ports:
+      - "8000:8000"  # Mapea el puerto 8000 del contenedor al puerto 8000 del host
+    volumes:
+      - .:/app  # Monta el directorio actual en /app dentro del contenedor
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  prometheus:
+    image: prom/prometheus  # Utiliza la imagen oficial de Prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml  # Monta el archivo de configuración de Prometheus
+      - prometheus_data:/prometheus  # Volumen persistente para los datos de Prometheus
+    ports:
+      - "9090:9090"  # Mapea el puerto 9090 del contenedor al puerto 9090 del host
+    depends_on:
+      app:
+        condition: service_healthy  # Espera hasta que el servicio 'app' esté en estado 'healthy'
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider --quiet http://localhost:9090/-/healthy || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  grafana:
+    image: grafana/grafana  # Utiliza la imagen oficial de Grafana
+    volumes:
+      - grafana_data:/var/lib/grafana  # Volumen persistente para los datos de Grafana
+    ports:
+      - "3000:3000"  # Mapea el puerto 3000 del contenedor al puerto 3000 del host
+    depends_on:
+      prometheus:
+        condition: service_healthy  # Espera hasta que Prometheus esté en estado 'healthy'
+    environment:
+      - GF_USERS_ALLOW_SIGN_UP=false  # Desactiva el registro de nuevos usuarios
+
+volumes:
+  prometheus_data:  # Definir el volumen persistente para Prometheus
+  grafana_data:  # Definir el volumen persistente para Grafana

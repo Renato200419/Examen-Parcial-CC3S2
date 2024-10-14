@@ -1,5 +1,6 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from app.sequence import GeneradorSecuencias
+from app.validation import ValidadorSecuencias
 
 # Crear el enrutador de FastAPI
 router = APIRouter()
@@ -28,3 +29,13 @@ def iniciar_juego():
     global secuencia_actual
     secuencia_actual = generador_secuencias.generar_secuencia()
     return {"mensaje": "Nuevo juego iniciado", "secuencia": secuencia_actual}
+
+@router.post("/juego/validar")
+def validar_secuencia(secuencia_jugador: list[str]):
+    """Válida la secuencia del jugador"""
+    global secuencia_actual
+    validador = ValidadorSecuencias(secuencia_actual)
+    es_valida = validador.validar_secuencia(secuencia_jugador)
+    if not es_valida:
+        raise HTTPException(status_code=400, detail="Secuencia incorrecta. Juego terminado.")
+    return {"mensaje": "Secuencia correcta, continúa", "secuencia": secuencia_actual}

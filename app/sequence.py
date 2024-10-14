@@ -8,7 +8,7 @@ class GeneradorSecuencias:
             self.colores = colores
         self.secuencia = []
 
-    def generar_secuencia(self, longitud=1):
+    def generar_secuencia(self, longitud):
         """Genera una secuencia aleatoria de colores."""
         self.secuencia = random.choices(self.colores, k=longitud)
         return self.secuencia

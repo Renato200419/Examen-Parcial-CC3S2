@@ -39,3 +39,11 @@ def validar_secuencia(secuencia_jugador: list[str]):
     if not es_valida:
         raise HTTPException(status_code=400, detail="Secuencia incorrecta. Juego terminado.")
     return {"mensaje": "Secuencia correcta, continúa", "secuencia": secuencia_actual}
+
+@router.post("/juego/continuar")
+def continuar_juego():
+    """Añade un nuevo color a la secuencia si el jugador ha acertado"""
+    global secuencia_actual
+    nuevo_color = generador_secuencias.generar_secuencia(1)[0]  # Generar un nuevo color y añadirlo al final
+    secuencia_actual.append(nuevo_color)
+    return {"mensaje": "Nuevo color añadido. Continúa la secuencia.", "secuencia": secuencia_actual}

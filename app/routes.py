@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from app.sequence import GeneradorSecuencias
 from app.validation import ValidadorSecuencias
-
+from prometheus_client import Counter, Histogram
 # Crear el enrutador de FastAPI
 router = APIRouter()
 
@@ -11,7 +11,10 @@ secuencia_actual = []
 puntuacion = 0
 modo_dificultad= "facil" # Por defecto, el modo es fácil
 
-# Rutas de la API
+# Métricas de Prometheus
+latencia_histogram = Histogram("latencia_api", "Latencia de la API en segundos")
+juegos_iniciados = Counter("juegos_iniciados", "Número de juegos iniciados")
+
 # Rutas de la API
 
 # Ruta principal
@@ -29,11 +32,13 @@ def iniciar_juego(dificultad: str = "facil"):
     """Inicia un nuevo juego generando una secuencia de un solo color."""
     global secuencia_actual, puntuacion, modo_dificultad
     secuencia_actual = generador_secuencias.generar_secuencia(1 if dificultad == "facil" else 2)
+    juegos_iniciados.inc()  # Incrementar el contador de juegos iniciados
     puntuacion = 0 # Esto reinicia la aplicacion 
     modo_dificultad = dificultad # Establece el modo de dificultad
     return {"mensaje": "Nuevo juego iniciado", "secuencia": secuencia_actual, "puntuacion": puntuacion,"dificultad": modo_dificultad}
 
 @router.post("/juego/validar")
+@latencia_histogram.time()
 def validar_secuencia(secuencia_jugador: list[str]):
     """Válida la secuencia del jugador"""
     global secuencia_actual, puntuacion

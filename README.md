@@ -58,7 +58,7 @@ El juego de memoria "Simon Says" es un proyecto desarrollado en Python que simul
 ### Cómo Iniciar el Juego
 
 Una vez que accedes a la consola (`app/console.py`), sigue las instrucciones en pantalla para interactuar con el juego. A continuación se detalla el flujo de juego:
-1. Selecciona el nivel de dificultad (fácil, medio o difícil).
+1. Selecciona el nivel de dificultad (fácil o difícil).
 ```bash
 Selecciona el nivel de dificultad:
 1. Fácil
@@ -76,7 +76,7 @@ Selecciona el color correspondiente:
 4. Amarillo
 ```
 
-3. Repite la secuencia ingresando los colores y sonidos en el orden correcto.
+3. Repite la secuencia ingresando los colores en el orden correcto.
 ```bash
 Elige un número (1-4): 1
 ¡Secuencia correcta! Puntuación: 1.
@@ -124,7 +124,7 @@ Para monitorear las métricas del juego:
 - **`prometheus.yml`**: Configuración de Prometheus para la recolección de métricas.
 - **`Dashboard/`**: Carpeta que contiene el archivo JSON del dashboard de Grafana.
 - **`features/`**: Carpeta que contiene las historias de usuario y escenarios de prueba.
-- **`features/steps`**: Implementación de los pasos de los escenarios de prueba.
+- **`features/steps/`**: Implementación de los pasos de los escenarios de prueba.
 - **`tests/`**: Pruebas unitarias y de integración para asegurar el correcto funcionamiento de la aplicación.
 - **`requirements.txt`**: Lista de dependencias de Python para el proyecto.
 

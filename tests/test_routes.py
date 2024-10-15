@@ -27,6 +27,28 @@ def test_validar_secuencia_correcta():
     assert "puntuacion" in data
     assert data["puntuacion"] > 0  # La puntuación debe incrementarse
 
+def test_validar_secuencia_incorrecta():
+    # Iniciar el juego para obtener la secuencia
+    response = client.post("/juego/iniciar", params={"dificultad": "facil"})
+    assert response.status_code == 200
+
+    # Probar con una secuencia incorrecta
+    secuencia_incorrecta = ["azul", "verde"]  # Asumimos que no es la secuencia correcta
+    response = client.post("/juego/validar", json=secuencia_incorrecta)
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Secuencia incorrecta. Juego terminado."
+
+def test_validar_secuencia_vacia():
+    # Iniciar el juego para obtener la secuencia
+    response = client.post("/juego/iniciar", params={"dificultad": "facil"})
+    assert response.status_code == 200
+
+    # Probar con una secuencia vacía
+    secuencia_vacia = []
+    response = client.post("/juego/validar", json=secuencia_vacia)
+    assert response.status_code == 400  # Esperamos un error de validación
+    assert response.json()["detail"] == "Secuencia incorrecta. Juego terminado."
+
 def test_continuar_juego():
     # Iniciar el juego
     response = client.post("/juego/iniciar", params={"dificultad": "facil"})

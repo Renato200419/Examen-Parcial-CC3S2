@@ -1,15 +1,30 @@
 # En esta documentación se subirá todo lo realizado por el alumno: Renato Steven Olivera Calderón
 
-Realicé la **Implementación de la generación y gestión de secuencias** de lo que le correspondía al **Miembro 1**. Así como otras tareas adicionales.
+## **Distribución de tareas**
+De acuerdo con las indicaciones del examen parcial, la **distribución de tareas** se llevó a cabo de manera equitativa entre los integrantes del equipo. Como **Miembro 1**, se me asignó la responsabilidad de desarrollar la **implementación de la generación y gestión de secuencias**, además de colaborar en otras tareas que se detallarán más adelante. La planificación del reparto de tareas se realizó con el objetivo de que cada miembro pudiera trabajar eficientemente en distintas áreas del proyecto, buscando un balance adecuado en la carga de trabajo.
+
+## **Mi rol en el equipo**
+
+Fui responsable de la creación del **Kanban board** para organizar la distribución de tareas en cada sprint. 
+
+- En el **Sprint 1**, junto con mi compañero Barriga, decidimos en la implementación de la **configuración inicial del proyecto**, que incluyó la integración de **Docker**, **Prometheus** y el pipeline de **CI/CD**, además de definir la estructura base de la aplicación utilizando **FastAPI**. 
+- Durante el **Sprint 2**, participé activamente en la **generación y gestión de secuencias** y en el desarrollo de las pruebas correspondientes. 
+- Finalmente, en el **Sprint 3**, colaboré en la implementación de **pruebas adicionales** utilizando **Pytest** y **Behave**, así como en la **documentación del proyecto**.
 
 # Índice:
  - [1. Contrucción del Kanban Board](#kanban-board)
- - [2. Implementación Generación de las Secuencias](#implementación-generación-de-las-secuencias)
- - [3. Lógica del Juego](#lógica-de-inicio-de-juego)
- - [4. Pruebas BDD para la generación de secuencias en el Juego](#pruebas-bdd-para-la-generación-de-secuencias-en-el-juego-simon-says)
- - [5. Pruebas unitarias para generar_secuencia con pytest](#pruebas-unitarias-para-generar_secuencia-con-pytest)
- - [6. Métricas con Prometheus y Grafana](#métricas-con-prometheus-y-grafana)
- - [7. Test Adicionales](#agregar-test-adicionales)
+ - [2. Explicación del Sprint 1](#explicación-del-sprint-1)
+ - [3. Explicación del Sprint 2](#explicación-del-sprint-2)
+    - [3.1. Implementación Generación de las Secuencias](#implementación-generación-de-las-secuencias)
+    - [3.2. Lógica del Juego](#lógica-de-inicio-de-juego)
+    - [3.3. Creación de la interfaz consola](#interfaz-por-consola)
+    - [3.3. Pruebas BDD para la generación de secuencias en el Juego](#pruebas-bdd-para-la-generación-de-secuencias-en-el-juego-simon-says)
+    - [3.4. Pruebas unitarias para generar_secuencia con pytest](#pruebas-unitarias-para-generar_secuencia-con-pytest)
+ - [4. Explicación del Sprint 3](#explicación-del-sprint-3)
+    - [4.1. Métricas con Prometheus y Grafana](#métricas-con-prometheus-y-grafana)
+    - [4.2. Test Adicionales](#agregar-test-adicionales)
+ - [5. Retos y desafíos enfrentados](#retos-y-desafíos-enfrentados)
+ - [6. Conclusión](#conclusión)
 
 # Kanban Board
 Un Kanban Board es una herramienta visual utilizada para gestionar y mejorar el flujo de trabajo en proyectos. Se divide en columnas que representan diferentes etapas del proceso (como "Por hacer", "En progreso" y "Hecho"). Las tareas se mueven entre columnas a medida que avanzan, lo que permite visualizar fácilmente el estado del proyecto y gestionar el trabajo de manera eficiente.
@@ -21,19 +36,20 @@ Un Kanban Board es una herramienta visual utilizada para gestionar y mejorar el 
 
 Luego de crearlo, se divide por columnas:
 - **Product Backlog**: Contiene todas las tareas pendientes y no priorizadas del producto, es decir es el repositorio de trabajo por hacer que aún no ha sido planificado en un sprint.
-- **Sprint Backlogs**: Lista de tareas seleccionadas para ser completadas en el sprint actua
+- **Sprint Backlogs**: Lista de tareas seleccionadas para ser completadas en el sprint actual.
 - **En progreso**: Tareas en las que el equipo está trabajando activamente.
-- **En revisión**: Indica que hay pull requests abiertas que están siendo revisadas
-- **Hecho**: Significa que las pull requests ya han sido revisadas y mergeadas a la rama (`develop`)
+- **En revisión**: Indica que hay pull requests abiertas que están siendo revisadas.
+- **Hecho**: Significa que las pull requests ya han sido revisadas y mergeadas a la rama (`develop`).
 
 ![Kanban](Imagenes-documentacion-Olivera/Foto2.png)
 
 2. Luego creamos el **template para las historias de usuario**.
+
 - Para realizarlo nos dirigimos a `Settings` de nuestro repositorio y seleccionamos `Set up templates`.
 
 ![Template](Imagenes-documentacion-Olivera/temp1.png)
 
-- Luegi añadimos el template.
+- Luego añadimos el template.
 
 ![Template](Imagenes-documentacion-Olivera/temp2.png)
 
@@ -114,11 +130,7 @@ El proyecto debe tener una estructura inicial que incluya carpetas para la aplic
 Vista de la historia de usuario:
 - **Asignaciones**: Se observa que los desarrolladores asignados a esta historia de usuario son Renato200419 (Olivera) y al-2100 (Barriga).
 
-
-
-
-
-- **Label (Etiqueta)**: Se ha etiquetado como enhancement, lo que indica que esta PR corresponde a una mejora o incremento en las funcionalidades del proyecto, en este caso, la organización de la estructura.
+- **Label (Etiqueta)**: Se ha etiquetado como `enhancement`, lo que indica que esta PR corresponde a una mejora o incremento en las funcionalidades del proyecto, en este caso, la organización de la estructura.
 
 - **Prioridad**: La prioridad está marcada como Alta, lo que sugiere que esta tarea es crítica para el desarrollo del proyecto, probablemente porque una buena estructura es esencial para el progreso posterior.
 
@@ -141,7 +153,7 @@ Para la planificación se dividió en 3 sprints por día.
    - **Crear Dockerfile para el proyecto**: Se creó el Dockerfile para contenedorización, lo cual permite ejecutar la aplicación en un entorno controlado.
 
 - ***Sprint 2***: Implementación de las tareas del miembro 1 y 2, junto con pruebas BDD y TDD.
-    - **Generar secuencia aleatoria de colores**: Se implementó la funcionalidad para generar secuencias aleatorias en el juego junto con su prueba BDD.
+   - **Generar secuencia aleatoria de colores**: Se implementó la funcionalidad para generar secuencias aleatorias en el juego junto con su prueba BDD.
    - **Validar secuencia ingresada por el jugador**: Se añadió la lógica que valida si la secuencia ingresada por el jugador es correcta. Además, se agregó su prueba BDD.
    - **Implementar y probar la generación y validación de secuencias**: Se realizaron las pruebas unitarias para asegurar que la generación y validación de secuencias funcionan correctamente.
    - **Implementar la consola del juego Simon Says**: Se creó la consola donde el jugador interactúa con el juego.
@@ -191,15 +203,29 @@ Para la planificación se dividió en 3 sprints por día.
     ![Kanban](Imagenes-documentacion-Olivera/bd1.png)
 
 
+# Explicación del Sprint 1:
+En este sprint, mi compañero Barriga y yo tomamos la decisión de abarcar la **estructura básica del proyecto**, dado que nuestro compañero Llanos se encontraba viajando de Huaral hacia Lima. Esto incluyó las siguientes tareas:
 
+- Configuración inicial de la **estructura y arquitectura del proyecto** utilizando **FastAPI**.
+- Contenerización del proyecto con **Docker** y orquestación a través de **Docker Compose**.
+- Configuración del **monitoreo básico** con **Prometheus**.
+- Implementación de un **pipeline de CI/CD** con **GitHub Actions** para automatizar pruebas y auditorías.
 
+Dado que ya contábamos con experiencia previa de las PC1 y PC2, mi compañero Barriga se encargó de llevar a cabo estas tareas, mientras yo me encargaba de estructurar el **Kanban Board** para facilitar la comprensión y organización del trabajo.
 
+# Explicación del Sprint 2:
 
+En este sprint, me centré en la **implementación de la generación de secuencias**, la **lógica del juego**, la creación de la **interfaz de consola**, y en desarrollar las pruebas necesarias para asegurar la funcionalidad correcta. Las tareas realizadas fueron las siguientes:
 
+- **Implementación de la generación de secuencias**: Se creó el archivo `sequence.py` que se encarga de generar secuencias aleatorias de colores, necesarias para el funcionamiento del juego.
+- **Lógica del juego**: Se implementó la lógica base que define las reglas y el flujo del juego, desde la generación de secuencias (Olivera) hasta la validación de las mismas (Barriga).
+- **Creación de la interfaz de consola**: Se desarrolló una consola interactiva que permite a los jugadores interactuar con el juego, seleccionar niveles de dificultad, y validar secuencias.
+- **Pruebas BDD para la generación de secuencias**: Se añadieron pruebas de comportamiento (BDD) para validar que la generación de secuencias en el juego funciona correctamente de acuerdo con los requisitos definidos.
+- **Pruebas unitarias con Pytest**: Se desarrollaron pruebas unitarias utilizando Pytest para verificar la correcta generación de secuencias y asegurar la estabilidad del código.
 
 
 # Implementación Generación de las Secuencias
-Para poder realizarlo creamos un archivo `sequence.py` en `app` en el que 
+Para poder realizarlo creamos un archivo `sequence.py` en `app` en el que implementamos la clase `GeneradorSecuencias`. Esta clase se encarga de generar secuencias aleatorias de colores, utilizando un conjunto de colores predefinido o uno personalizado según se necesite.
 
 ```python
 import random
@@ -217,8 +243,12 @@ class GeneradorSecuencias:
         self.secuencia = random.choices(self.colores, k=longitud)
         return self.secuencia
 ```
+
+- **Pull Request asociado**: [Añadir generación de secuencias aleatorias y lógica de inicio de juego (#12)](https://github.com/Renato200419/Examen-Parcial-CC3S2/pull/12).
+- **Rama vinculada**: `feature/Olivera-generar_secuencias`
+
 # Lógica de inicio de juego
-En `routes.py` agregamos el endpoint para iniciar el juego:
+En `routes.py` agregamos el endpoint para iniciar el juego y continuar la secuencia:
 
 ```python
 from fastapi import APIRouter
@@ -249,7 +279,108 @@ def iniciar_juego():
     global secuencia_actual
     secuencia_actual = generador_secuencias.generar_secuencia()
     return {"mensaje": "Nuevo juego iniciado", "secuencia": secuencia_actual}
+
+@router.post("/juego/continuar")
+def continuar_juego():
+    """Añade un nuevo color a la secuencia si el jugador ha acertado"""
+    global secuencia_actual
+    nueva_longitud = len(secuencia_actual) + 1
+    secuencia_actual = generador_secuencias.generar_secuencia(nueva_longitud)
+    return {"mensaje": "Nuevo color añadido. Continúa la secuencia.", "secuencia": secuencia_actual}
 ```
+- **Pull Request asociado**: [Implementación de la consola interactiva y endpoint para continuar juego (#20)](https://github.com/Renato200419/Examen-Parcial-CC3S2/pull/20).
+- **Rama vinculada**: `feature/Olivera-consola`
+
+# Interfaz por consola
+Me encargué de la creación de la interfaz por consola para que el usuario pueda interactuar con el juego `Simon Says`.
+
+```python
+import requests
+
+class ConsolaSimonSays:
+    def __init__(self, base_url="http://localhost:8000"):
+        self.base_url = base_url
+        self.secuencia_actual = []  # Almacena la secuencia completa generada
+        self.nuevo_color = None  # Almacena el nuevo color que se añade
+
+    def mostrar_menu_colores(self):
+        """Muestra un menú para que el jugador seleccione colores."""
+        print("Selecciona el color correspondiente:")
+        print("1. Rojo")
+        print("2. Verde")
+        print("3. Azul")
+        print("4. Amarillo")
+
+    def obtener_secuencia_jugador(self):
+        """Permite al jugador seleccionar los colores de la secuencia actual."""
+        secuencia_jugador = []
+        for i in range(len(self.secuencia_actual)):
+            self.mostrar_menu_colores()
+            opcion = int(input("Elige un número (1-4): ").strip())
+            
+            if opcion == 1:
+                secuencia_jugador.append('rojo')
+            elif opcion == 2:
+                secuencia_jugador.append('verde')
+            elif opcion == 3:
+                secuencia_jugador.append('azul')
+            elif opcion == 4:
+                secuencia_jugador.append('amarillo')
+            else:
+                print("Opción no válida, intenta nuevamente.")
+                return self.obtener_secuencia_jugador()  # Reinicia si hay un error en la entrada
+        return secuencia_jugador
+
+    def iniciar_juego(self):
+        """Llama al endpoint para iniciar el juego."""
+        response = requests.post(f"{self.base_url}/juego/iniciar")
+        if response.status_code == 200:
+            self.secuencia_actual = response.json()["secuencia"]
+            self.nuevo_color = self.secuencia_actual[-1]
+            print(f"Juego iniciado. Secuencia: [{self.nuevo_color}]")  # Muestra solo el nuevo color
+        else:
+            print("Error al iniciar el juego.")
+
+    def validar_jugada(self, secuencia_jugador):
+        """Llama al endpoint para validar la jugada del jugador."""
+        response = requests.post(f"{self.base_url}/juego/validar", json=secuencia_jugador)
+        if response.status_code == 200:
+            print("¡Secuencia correcta! Continúa.")
+            return True
+        else:
+            print(f"Secuencia incorrecta. Juego terminado. {response.json()['detail']}")
+            return False
+
+    def continuar_juego(self):
+        """Llama al endpoint para continuar el juego, añadiendo un nuevo color."""
+        response = requests.post(f"{self.base_url}/juego/continuar")
+        if response.status_code == 200:
+            self.secuencia_actual = response.json()["secuencia"]
+            self.nuevo_color = self.secuencia_actual[-1]
+            print(f"Nuevo color añadido: {self.nuevo_color}")  # Solo muestra el nuevo color
+        else:
+            print("Error al continuar el juego.")
+
+    def jugar(self):
+        """Lógica principal del juego."""
+        self.iniciar_juego()
+        while True:
+            # Obtener la secuencia del jugador
+            secuencia_jugador = self.obtener_secuencia_jugador()
+            
+            # Validar la secuencia del jugador
+            if not self.validar_jugada(secuencia_jugador):
+                break  # Termina el juego si la secuencia es incorrecta
+            
+            # Continuar el juego si la secuencia es correcta
+            self.continuar_juego()
+
+if __name__ == "__main__":
+    juego = ConsolaSimonSays()
+    juego.jugar()
+```
+- **Pull Request asociado**: [Implementación de la consola interactiva y endpoint para continuar juego (#20)](https://github.com/Renato200419/Examen-Parcial-CC3S2/pull/20).
+- **Rama vinculada**: `feature/Olivera-consola`
 
 # Pruebas BDD para la generación de secuencias en el Juego: Simon Says
 
@@ -311,6 +442,9 @@ Para poder realizarlo se crea la carpeta `features` en el tendremos los archivos
 
 ![Resultado-Behave](Imagenes-documentacion-Olivera/behave.png)
 
+- **Pull Request asociado**: [Añadir pruebas BDD para la generación de secuencias en Simon Says (#17)](https://github.com/Renato200419/Examen-Parcial-CC3S2/pull/17).
+- **Rama vinculada**: `feature/Olivera-bdd-generacion_secuencias`
+
 
 # Pruebas unitarias para generar_secuencia con pytest 
 Creamos la carpeta `tests` para guardar todas las pruebas unitarias.
@@ -354,6 +488,19 @@ def test_generar_secuencia_colores_personalizados():
 - **Resultado de la prueba unitaria**
 
 ![Resultado-test](Imagenes-documentacion-Olivera/test.png)
+
+- **Pull Request asociado**: [Agregar pruebas unitarias para generar_secuencia con pytest (#21)](https://github.com/Renato200419/Examen-Parcial-CC3S2/pull/21).
+- **Rama vinculada**: `feature/Olivera-tests`
+
+# Explicación del Sprint 3
+
+En este sprint, me enfoqué en dos áreas principales: la **integración de métricas con Prometheus y Grafana**, y la **implementación de pruebas adicionales** para fortalecer la cobertura del proyecto. Las tareas completadas fueron las siguientes:
+
+- **Métricas con Prometheus y Grafana**: Se configuraron las herramientas de monitoreo para recolectar métricas del sistema, lo que permite una visualización en tiempo real del rendimiento de la aplicación y el seguimiento de los recursos utilizados durante las partidas de juego. Esto facilita el análisis y la identificación de posibles mejoras o problemas en el sistema.
+  
+- **Agregar pruebas adicionales**:
+   - **Pruebas BDD**: Se agregó un escenario de prueba en Gherkin para verificar el reinicio del juego. Se implementaron los pasos correspondientes para validar la correcta reinicialización de la secuencia y la puntuación. Estas pruebas se ejecutaron con **Behave**, y se asegura que el sistema funcione de acuerdo con los comportamientos esperados.
+   - **Pruebas TDD**: Se agregaron pruebas unitarias adicionales con **Pytest** para los endpoints clave en `routes.py`, como la validación de secuencias correctas, la continuidad del juego y el reinicio de partidas. Estas pruebas aseguran que la lógica del juego funcione correctamente y que las secuencias se generen y gestionen como se espera.
 
 # **Métricas con Prometheus y Grafana**
 
@@ -463,6 +610,10 @@ Una vez dentro de Grafana
 - **Resultado**
 
 ![Resultado](Imagenes-documentacion-Olivera/metrics.png)
+
+- **Pull Request asociado**: [Añadir métricas de Prometheus para latencia y número de juegos iniciados en Simon Says y subir Dashboards (#28)](https://github.com/Renato200419/Examen-Parcial-CC3S2/pull/28).
+- **Rama vinculada**: `feature/Olivera-metricas`
+
 
 
 # Agregar test adicionales
@@ -583,3 +734,22 @@ def test_reiniciar_juego():
 
 ![pytest](Imagenes-documentacion-Olivera/adicion-test.png)
 
+- **Pull Request asociado**: [Implementación de pruebas adicionales en Pytest y Behave para validación y reinicio de juego (#33)](https://github.com/Renato200419/Examen-Parcial-CC3S2/pull/33).
+- **Rama vinculada**: `feature/test-adicionales`
+
+
+## **Retos y desafíos enfrentados**
+A lo largo del desarrollo del proyecto, nos encontramos con varios desafíos tanto técnicos como de coordinación, que tuvimos que superar para avanzar exitosamente:
+
+1. **Manejo del tiempo y planificación previa**: El examen se liberó antes de la hora oficial (1 p.m.), lo que fue beneficioso ya que nos permitió organizar mejor nuestro tiempo y empezar con las primeras etapas del proyecto de forma anticipada. Sin embargo, uno de los integrantes del equipo no pudo participar inmediatamente debido a compromisos previos, como su traslado. Esto nos llevó a planificar que el primer sprint fuera ejecutado por el alumno Barriga, para dejar todo preparado y asegurar que en el **Sprint 2** pudiéramos trabajar de manera más colaborativa y fluida sobre una base establecida. 
+
+2. **Ajuste de configuraciones reutilizadas**: Un reto clave fue asegurarnos de que las configuraciones heredadas de proyectos anteriores funcionaran adecuadamente en este nuevo contexto. Aunque el uso de estas configuraciones nos permitió avanzar rápidamente, fue necesario adaptarlas para cumplir con los requisitos específicos de este proyecto.
+
+3. **Desafíos con el pipeline de CI/CD**: Durante la implementación del pipeline de CI/CD, enfrentamos un problema técnico relacionado con los límites de extracción de imágenes desde Docker Hub. Al ejecutar el pipeline, nos encontramos con el error "too many requests", lo que impedía descargar todas las imágenes necesarias para construir los servicios. La solución temporal fue reintentar la ejecución del pipeline varias veces hasta que se completaran las descargas. Posteriormente, al retomar el trabajo en la Sala 3 de la UNI, el problema se resolvió y pudimos continuar sin más interrupciones.
+
+![Error](Imagenes-documentacion-Olivera/erro1.png)
+
+![Error](Imagenes-documentacion-Olivera/erro2.png)
+# Conclusión
+
+Mi principal contribución en este proyecto estuvo centrada en la creación y organización del Kanban board, lo que facilitó una distribución clara y efectiva de las tareas a lo largo de los sprints. Durante el Sprint 2, participé activamente en la implementación de la lógica de generación y gestión de secuencias, así como en la creación de las pruebas que aseguraron el correcto funcionamiento de esta funcionalidad. En el Sprint 3, contribuí en la integración de métricas con Prometheus y Grafana, lo que nos permitió monitorear el sistema en tiempo real, y también en la adición de pruebas adicionales para mejorar la cobertura del código. Gracias a estos esfuerzos, el equipo pudo avanzar de manera estructurada y colaborativa, trabajando sobre una base sólida que optimizó el desarrollo y la calidad del proyecto.

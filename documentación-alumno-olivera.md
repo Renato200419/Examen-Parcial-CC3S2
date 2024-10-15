@@ -1,5 +1,7 @@
 # En esta documentación se subirá todo lo realizado por el alumno: Renato Steven Olivera Calderón
 
+Realicé la **Implementación de la generación y gestión de secuencias** de lo que le correspondía al **Miembro 1**. Así como otras tareas adicionales.
+
 # Índice:
  - [1. Contrucción del Kanban Board](#kanban-board)
  - [2. Implementación Generación de las Secuencias](#implementación-generación-de-las-secuencias)
@@ -7,6 +9,8 @@
  - [4. Pruebas BDD para la generación de secuencias en el Juego](#pruebas-bdd-para-la-generación-de-secuencias-en-el-juego-simon-says)
  - [5. Pruebas unitarias para generar_secuencia con pytest](#pruebas-unitarias-para-generar_secuencia-con-pytest)
  - [6. Métricas con Prometheus y Grafana](#métricas-con-prometheus-y-grafana)
+ - [7. Test Adicionales](#agregar-test-adicionales)
+
 # Kanban Board
 Un Kanban Board es una herramienta visual utilizada para gestionar y mejorar el flujo de trabajo en proyectos. Se divide en columnas que representan diferentes etapas del proceso (como "Por hacer", "En progreso" y "Hecho"). Las tareas se mueven entre columnas a medida que avanzan, lo que permite visualizar fácilmente el estado del proyecto y gestionar el trabajo de manera eficiente.
 
@@ -142,8 +146,13 @@ Para la planificación se dividió en 3 sprints por día.
    - **Implementar y probar la generación y validación de secuencias**: Se realizaron las pruebas unitarias para asegurar que la generación y validación de secuencias funcionan correctamente.
    - **Implementar la consola del juego Simon Says**: Se creó la consola donde el jugador interactúa con el juego.
 
-- ***Sprint 3***: Refactorización del código, documentación del proyecto, test adicionales, dashboards de Grafana, métricas de Prometheus y tarea del miembro 3, con pruebas BDD y TDD.
+- ***Sprint 3***: Refactorización del código, documentación del proyecto, test adicionales BDD y TDD, dashboards de Grafana, métricas de Prometheus y tarea del miembro 3
 
+    - **Documentación del Proyecto**: Se completó la documentación detallada del proyecto, incluyendo las funcionalidades, pruebas y configuraciones, facilitando su comprensión y mantenimiento futuro.
+    - **Implementar pruebas de selección de dificultad, validación de secuencias y puntuación**: Se implementaron pruebas adicionales utilizando Pytest y Behave para validar la selección de dificultad, la correcta validación de las secuencias y la asignación de puntuaciones en el juego "Simon Says".
+    - **Dashboards y Métricas de Prometheus**: Se configuraron dashboards en Grafana y se integraron métricas en Prometheus para monitorear el rendimiento del juego en tiempo real, proporcionando insights sobre el estado del sistema.
+    - **Implementar sistema de puntuación y niveles de dificultad en Simon Says**: Se completó la implementación del sistema de puntuación y los niveles de dificultad en el juego "Simon Says", mejorando la jugabilidad y ofreciendo diferentes modos de desafío para los jugadores.
+    - **Implementación de Pruebas Adicionales con Pytest y Behave**: Se añadieron pruebas adicionales para cubrir casos no contemplados en sprints anteriores, asegurando que el sistema funcione correctamente bajo diferentes escenarios, tanto desde el punto de vista del comportamiento (BDD) como del código (TDD).
 
 5. **Progreso del proyecto**
 - Inicio del Sprint 1
@@ -176,8 +185,10 @@ Para la planificación se dividió en 3 sprints por día.
 
     ![Kanban](Imagenes-documentacion-Olivera/Foto12.png)
 
-- 
+- **Para el Sprint 3**
+    ![Kanban](Imagenes-documentacion-Olivera/Foto13.png)
 
+    ![Kanban](Imagenes-documentacion-Olivera/bd1.png)
 
 
 
@@ -452,3 +463,123 @@ Una vez dentro de Grafana
 - **Resultado**
 
 ![Resultado](Imagenes-documentacion-Olivera/metrics.png)
+
+
+# Agregar test adicionales
+
+Se agregan test adicionales:
+- **BDD:**
+1. Se agrega el escenario de prueba en Gherkin:
+```gherkin
+Feature: Reiniciar juego
+  
+  Scenario: Reiniciar el juego
+    Given que he iniciado un nuevo juego
+    And he validado correctamente la secuencia
+    When reinicio el juego
+    Then el sistema debe generar una nueva secuencia
+    And la puntuación debe reiniciarse a cero
+```
+2. Se implementan los pasos de prueba para el escenario de Reiniciar Juego.
+```python
+from behave import *
+import requests
+
+base_url = "http://localhost:8000"
+
+@given('que he iniciado un nuevo juego')
+def step_iniciar_nuevo_juego(context):
+    response = requests.post(f"{base_url}/juego/iniciar", params={"dificultad": "facil"})
+    assert response.status_code == 200
+    context.secuencia = response.json()["secuencia"]
+    
+@given('he validado correctamente la secuencia')
+def step_validar_secuencia_correcta(context):
+    response = requests.post(f"{base_url}/juego/iniciar", params={"dificultad": "facil"})
+    assert response.status_code == 200
+    context.secuencia_anterior = response.json()["secuencia"]
+
+    # Validar la secuencia
+    response = requests.post(f"{base_url}/juego/validar", json=context.secuencia_anterior)
+    assert response.status_code == 200
+
+@when('reinicio el juego')
+def step_reiniciar_juego(context):
+    response = requests.post(f"{base_url}/juego/iniciar", params={"dificultad": "facil"})
+    assert response.status_code == 200
+    context.secuencia_nueva = response.json()["secuencia"]
+    context.puntuacion_nueva = response.json()["puntuacion"]
+
+@then('el sistema debe generar una nueva secuencia')
+def step_verificar_nueva_secuencia(context):
+    assert context.secuencia_nueva != context.secuencia_anterior, "La secuencia debería haber cambiado"
+
+@then('la puntuación debe reiniciarse a cero')
+def step_verificar_puntuacion_reiniciada(context):
+    assert context.puntuacion_nueva == 0, "La puntuación debería reiniciarse a 0"
+```
+
+3. Ejecución de la prueba:
+
+![pytest](Imagenes-documentacion-Olivera/behave-test.png)
+
+- **TDD:**
+1. Se agregan las pruebas unitarias para los endpoints en `routes.py`
+```python
+def test_validar_secuencia_correcta():
+    # Iniciar el juego para obtener la secuencia
+    response = client.post("/juego/iniciar", params={"dificultad": "facil"})
+    assert response.status_code == 200
+    secuencia = response.json()["secuencia"]
+
+    # Validar la secuencia correcta
+    response = client.post("/juego/validar", json=secuencia)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["mensaje"] == "Secuencia correcta, continúa"
+    assert "puntuacion" in data
+    assert data["puntuacion"] > 0  # La puntuación debe incrementarse
+
+def test_continuar_juego():
+    # Iniciar el juego
+    response = client.post("/juego/iniciar", params={"dificultad": "facil"})
+    assert response.status_code == 200
+    secuencia = response.json()["secuencia"]
+
+    # Validar la secuencia correcta
+    response = client.post("/juego/validar", json=secuencia)
+    assert response.status_code == 200
+
+    # Continuar el juego y verificar que se añaden nuevos colores
+    response = client.post("/juego/continuar")
+    assert response.status_code == 200
+    data = response.json()
+    assert "secuencia" in data
+    assert len(data["secuencia"]) > len(secuencia)  # La secuencia debe haber crecido
+
+def test_reiniciar_juego():
+    # Iniciar el juego
+    response = client.post("/juego/iniciar", params={"dificultad": "facil"})
+    assert response.status_code == 200
+    secuencia_anterior = response.json()["secuencia"]
+
+    # Validar la secuencia
+    response = client.post("/juego/validar", json=secuencia_anterior)
+    assert response.status_code == 200
+    puntuacion_anterior = response.json()["puntuacion"]
+
+    # Reiniciar el juego
+    response = client.post("/juego/iniciar", params={"dificultad": "facil"})
+    assert response.status_code == 200
+    secuencia_nueva = response.json()["secuencia"]
+    puntuacion_nueva = response.json()["puntuacion"]
+
+    # Verificar que la secuencia y puntuación se reinician
+    assert secuencia_nueva != secuencia_anterior  # La secuencia debería haber cambiado
+    assert puntuacion_nueva == 0  # La puntuación debería reiniciarse a 0     
+```
+
+2. Ejecución de las pruebas unitarias:
+
+![pytest](Imagenes-documentacion-Olivera/adicion-test.png)
+

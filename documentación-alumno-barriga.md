@@ -29,7 +29,7 @@ Durante el **Sprint 1**, me encargué de configurar la estructura y las herramie
    - **PR asociado**: [Añadir estructura básica del proyecto (#1)](https://github.com/Renato200419/Examen-Parcial-CC3S2/pull/1).
    - **Rama asociada**: `feature/basic-structure`
 
-	    ![estructura básica](Imagenes-documentacion-Barriga/basic-structure.png)])
+	    ![estructura básica](Imagenes-documentacion-Barriga/basic-structure.png)
    * **routes.py**:
 		```python
 		from fastapi import APIRouter  

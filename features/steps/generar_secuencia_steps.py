@@ -5,7 +5,7 @@ from app.sequence import GeneradorSecuencias
 @given('que inicio un nuevo juego')
 def step_iniciar_nuevo_juego(context):
     context.generador = GeneradorSecuencias()
-    context.secuencia_actual = context.generador.generar_secuencia(1)
+    context.secuencia_actual = context.generador.generar_secuencia(1)   
     
 @when('solicito la generación de una nueva secuencia')
 def step_generar_secuencia(context):

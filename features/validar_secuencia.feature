@@ -1,7 +1,4 @@
 Feature: Validación de secuencias ingresadas por el jugador
-  Como desarrollador,
-  Quiero implementar la validación de secuencias,
-  Para verificar que el jugador repita correctamente la secuencia generada y avanzar o finalizar el juego.
 
   Scenario: Validación exitosa de la secuencia
     Given que el sistema ha generado una secuencia

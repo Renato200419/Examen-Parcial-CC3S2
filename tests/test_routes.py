@@ -86,3 +86,33 @@ def test_reiniciar_juego():
     # Verificar que la secuencia y puntuación se reinician
     assert secuencia_nueva != secuencia_anterior  # La secuencia debería haber cambiado
     assert puntuacion_nueva == 0  # La puntuación debería reiniciarse a 0        
+
+def test_iniciar_juego_facil():
+    response = client.post("/juego/iniciar", params={"dificultad": "facil"})
+    assert response.status_code == 200
+    data = response.json()
+    assert data["mensaje"] == "Nuevo juego iniciado"
+    assert data["dificultad"] == "facil"
+    assert len(data["secuencia"]) == 1  # El nivel fácil genera una secuencia de 1 color
+
+def test_iniciar_juego_dificil():
+    response = client.post("/juego/iniciar", params={"dificultad": "dificil"})
+    assert response.status_code == 200
+    data = response.json()
+    assert data["mensaje"] == "Nuevo juego iniciado"
+    assert data["dificultad"] == "dificil"
+    assert len(data["secuencia"]) == 2  # El nivel difícil genera una secuencia de 2 colores
+
+def test_puntuacion_dificil():
+    # Iniciar el juego en modo difícil
+    response = client.post("/juego/iniciar", params={"dificultad": "dificil"})
+    assert response.status_code == 200
+    secuencia = response.json()["secuencia"]
+
+    # Validar la secuencia correcta
+    response = client.post("/juego/validar", json=secuencia)
+    assert response.status_code == 200
+    puntuacion = response.json()["puntuacion"]
+
+    # Verificar que la puntuación sea mayor que cero
+    assert puntuacion > 0

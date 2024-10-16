@@ -505,8 +505,8 @@ En este sprint, me enfoqué en dos áreas principales: la **integración de mét
 # **Métricas con Prometheus y Grafana**
 
 Se implementaron dos métricas:
-- `latencia_histogram` 
-- `juegos_iniciados`
+- `latencia_histogram`: Esta métrica utiliza un histograma para medir la latencia de las respuestas de la API en segundos. Permite observar la distribución de tiempos de respuesta, facilitando el análisis del rendimiento de las rutas de la aplicación. Es útil para identificar cuellos de botella y mejorar la eficiencia. 
+- `juegos_iniciados`: Esta métrica es un contador que registra el número total de juegos iniciados a través de la API. Cada vez que se inicia un nuevo juego, se incrementa en uno. Es valiosa para evaluar el uso de la aplicación y entender la popularidad del juego a lo largo del tiempo.
 
 Se realizaron cambios en `main.py`
 
@@ -739,7 +739,7 @@ def test_reiniciar_juego():
 
 
 ## **Retos y desafíos enfrentados**
-A lo largo del desarrollo del proyecto, nos encontramos con varios desafíos tanto técnicos como de coordinación, que tuvimos que superar para avanzar exitosamente:
+A lo largo del desarrollo del proyecto, nuestro grupo se encontró con varios desafíos tanto técnicos como de coordinación, que tuvimos que superar para avanzar exitosamente:
 
 1. **Manejo del tiempo y planificación previa**: El examen se liberó antes de la hora oficial (1 p.m.), lo que fue beneficioso ya que nos permitió organizar mejor nuestro tiempo y empezar con las primeras etapas del proyecto de forma anticipada. Sin embargo, uno de los integrantes del equipo no pudo participar inmediatamente debido a compromisos previos, como su traslado. Esto nos llevó a planificar que el primer sprint fuera ejecutado por el alumno Barriga, para dejar todo preparado y asegurar que en el **Sprint 2** pudiéramos trabajar de manera más colaborativa y fluida sobre una base establecida. 
 
@@ -750,6 +750,7 @@ A lo largo del desarrollo del proyecto, nos encontramos con varios desafíos tan
 ![Error](Imagenes-documentacion-Olivera/erro1.png)
 
 ![Error](Imagenes-documentacion-Olivera/erro2.png)
+
 # Conclusión
 
 Mi principal contribución en este proyecto estuvo centrada en la creación y organización del Kanban board, lo que facilitó una distribución clara y efectiva de las tareas a lo largo de los sprints. Durante el Sprint 2, participé activamente en la implementación de la lógica de generación y gestión de secuencias, así como en la creación de las pruebas que aseguraron el correcto funcionamiento de esta funcionalidad. En el Sprint 3, contribuí en la integración de métricas con Prometheus y Grafana, lo que nos permitió monitorear el sistema en tiempo real, y también en la adición de pruebas adicionales para mejorar la cobertura del código. Gracias a estos esfuerzos, el equipo pudo avanzar de manera estructurada y colaborativa, trabajando sobre una base sólida que optimizó el desarrollo y la calidad del proyecto.

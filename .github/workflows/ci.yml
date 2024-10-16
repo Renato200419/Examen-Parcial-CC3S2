@@ -47,7 +47,7 @@ jobs:
 
       - name: Run Behave tests
         run: |
-          #docker-compose exec app behave
+          docker-compose exec app behave
 
       - name: Run unit tests
         run: |

@@ -1,15 +1,19 @@
 from fastapi import APIRouter, HTTPException
 from app.sequence import GeneradorSecuencias
 from app.validation import ValidadorSecuencias
-
+from prometheus_client import Counter, Histogram
 # Crear el enrutador de FastAPI
 router = APIRouter()
 
-
-# Inicializar el generador de secuencias
 # Inicializar el generador de secuencias
 generador_secuencias = GeneradorSecuencias()
 secuencia_actual = []
+puntuacion = 0
+modo_dificultad= "facil" # Por defecto, el modo es fácil
+
+# Métricas de Prometheus
+latencia_histogram = Histogram("latencia_api", "Latencia de la API en segundos")
+juegos_iniciados = Counter("juegos_iniciados", "Número de juegos iniciados")
 
 # Rutas de la API
 
@@ -24,26 +28,33 @@ def health_check():
     return {"status": "healthy"}
 
 @router.post("/juego/iniciar")
-def iniciar_juego():
+def iniciar_juego(dificultad: str = "facil"):
     """Inicia un nuevo juego generando una secuencia de un solo color."""
-    global secuencia_actual
-    secuencia_actual = generador_secuencias.generar_secuencia()
-    return {"mensaje": "Nuevo juego iniciado", "secuencia": secuencia_actual}
+    global secuencia_actual, puntuacion, modo_dificultad
+    secuencia_actual = generador_secuencias.generar_secuencia(1 if dificultad == "facil" else 2)
+    juegos_iniciados.inc()  # Incrementar el contador de juegos iniciados
+    puntuacion = 0 # Esto reinicia la aplicacion 
+    modo_dificultad = dificultad # Establece el modo de dificultad
+    return {"mensaje": "Nuevo juego iniciado", "secuencia": secuencia_actual, "puntuacion": puntuacion,"dificultad": modo_dificultad}
 
 @router.post("/juego/validar")
+@latencia_histogram.time()
 def validar_secuencia(secuencia_jugador: list[str]):
     """Válida la secuencia del jugador"""
-    global secuencia_actual
+    global secuencia_actual, puntuacion
     validador = ValidadorSecuencias(secuencia_actual)
     es_valida = validador.validar_secuencia(secuencia_jugador)
     if not es_valida:
         raise HTTPException(status_code=400, detail="Secuencia incorrecta. Juego terminado.")
-    return {"mensaje": "Secuencia correcta, continúa", "secuencia": secuencia_actual}
+    # Actualizar puntuación si la secuencia es correcta
+    puntuacion += len(secuencia_actual)
+    return {"mensaje": "Secuencia correcta, continúa", "puntuacion": puntuacion, "secuencia": secuencia_actual}
 
 @router.post("/juego/continuar")
 def continuar_juego():
     """Añade un nuevo color a la secuencia si el jugador ha acertado"""
-    global secuencia_actual
-    nuevo_color = generador_secuencias.generar_secuencia(1)[0]  # Generar un nuevo color y añadirlo al final
-    secuencia_actual.append(nuevo_color)
-    return {"mensaje": "Nuevo color añadido. Continúa la secuencia.", "secuencia": secuencia_actual}
+    global secuencia_actual, modo_dificultad
+    cantidad_colores = 1 if modo_dificultad == "facil" else 2
+    nuevos_colores = generador_secuencias.generar_secuencia(cantidad_colores)
+    secuencia_actual.extend(nuevos_colores)  # Añadir uno o dos colores a la secuencia
+    return {"mensaje": f"{cantidad_colores} color(es) añadido(s)", "secuencia": secuencia_actual}
